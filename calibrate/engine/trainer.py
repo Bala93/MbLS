@@ -37,7 +37,7 @@ class Trainer:
 
     def build_data_loader(self) -> None:
         # data pipeline
-        self.train_loader, self.val_loader = instantiate(self.cfg.data.object.trainval)
+        self.train_loader, self.val_loader, self.display_loader = instantiate(self.cfg.data.object.trainval)
         logger.info("Data pipeline initialized")
 
     def build_model(self) -> None:
@@ -279,12 +279,18 @@ class Trainer:
         logger.info(
             "Everything is perfect so far. Let's start training. Good luck!"
         )
+
+
+        print (self.model, self.optimizer, self.loss_func, self.scheduler)
+
         for epoch in range(self.start_epoch, self.max_epoch):
             logger.info("=" * 20)
             logger.info(" Start epoch {}".format(epoch + 1))
             logger.info("=" * 20)
             self.train_epoch(epoch)
             val_loss, val_score = self.eval_epoch(self.val_loader, epoch, phase="Val")
+            self.disp_epoch(self.display_loader, epoch, phase="Val")
+            
             # run lr scheduler
             self.scheduler.step()
             if isinstance(self.loss_func, LogitMarginL1):

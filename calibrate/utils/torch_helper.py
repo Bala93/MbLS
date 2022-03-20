@@ -2,6 +2,8 @@ import random
 import numpy as np
 import torch
 import torch.nn as nn
+import torchvision
+
 
 from .constants import EPS
 
@@ -55,3 +57,15 @@ def disable_bn(model):
 
 def enable_bn(model):
     model.train()
+
+
+def grid_image(image):
+
+    image = image.float()
+
+    image -= image.min()
+    image /= image.max()
+
+    grid = torchvision.utils.make_grid(image, nrow=4, pad_value=1)
+
+    return grid
