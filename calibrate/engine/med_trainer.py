@@ -153,6 +153,7 @@ class MedSegmentTrainer(Trainer):
             # compute the time for data loading
             self.data_time_meter.update(time.time() - end)
             inputs, labels = inputs.to(self.device), labels.to(self.device)
+            # print (inputs.shape, labels.shape)
             # forward
             outputs = self.model(inputs)
 
@@ -250,12 +251,12 @@ class MedSegmentTrainer(Trainer):
             pred_grid = grid_image(pred_labels.unsqueeze(1))
             # pred_grid = grid_image(outputs)
 
-            wandb.log({"Input":wandb.Image(input_grid),"Target":wandb.Image(label_grid),"Prediction":wandb.Image(pred_grid)})
+            if self.cfg.wandb.enable:
+                wandb.log({"Input":wandb.Image(input_grid),"Target":wandb.Image(label_grid),"Prediction":wandb.Image(pred_grid)})
         
             break
 
         return
-
 
     def test(self):
         logger.info("We are almost done : final testing ...")

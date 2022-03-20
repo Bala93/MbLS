@@ -281,7 +281,7 @@ class Trainer:
         )
 
 
-        print (self.model, self.optimizer, self.loss_func, self.scheduler)
+        # print (self.model, self.optimizer, self.loss_func, self.scheduler)
 
         for epoch in range(self.start_epoch, self.max_epoch):
             logger.info("=" * 20)
